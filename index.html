@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ElevateTech — Build. Analyze.</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20120%20120%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23121922%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230B0F14%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%0A%20%20%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22116%22%20height%3D%22116%22%20rx%3D%2226%22%20fill%3D%22url%28%23bg%29%22%20stroke%3D%22%23232E3D%22%20stroke-width%3D%222%22/%3E%0A%0A%20%20%3C%21--%20ascending%20bars%20%28elevate%29%20--%3E%0A%20%20%3Crect%20x%3D%2234%22%20y%3D%2266%22%20width%3D%2210%22%20height%3D%2220%22%20rx%3D%222%22%20fill%3D%22%234FD1C5%22/%3E%0A%20%20%3Crect%20x%3D%2250%22%20y%3D%2256%22%20width%3D%2210%22%20height%3D%2230%22%20rx%3D%222%22%20fill%3D%22%234FD1C5%22/%3E%0A%20%20%3Crect%20x%3D%2266%22%20y%3D%2244%22%20width%3D%2210%22%20height%3D%2242%22%20rx%3D%222%22%20fill%3D%22%23E8A33D%22/%3E%0A%0A%20%20%3C%21--%20terminal%20caret%20%28build%29%20--%3E%0A%20%20%3Cpath%20d%3D%22M34%2038%20L46%2048%20L34%2058%22%20fill%3D%22none%22%20stroke%3D%22%238194A6%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%0A%3C/svg%3E%0A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B0F14;
+    --surface: #121922;
+    --surface-2: #182130;
+    --border: #232E3D;
+    --text: #E8EDF2;
+    --text-muted: #8194A6;
+    --teal: #4FD1C5;
+    --amber: #E8A33D;
+    --teal-dim: rgba(79,209,197,0.12);
+    --amber-dim: rgba(232,163,61,0.12);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before{
+    content:'';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .wrap{ max-width: 1080px; margin:0 auto; padding: 0 32px; position:relative; z-index:1; }
+
+  /* NAV */
+  header{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(11,15,20,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    max-width: 1080px; margin:0 auto; padding: 18px 32px;
+  }
+  .logo{
+    font-family: var(--font-mono); font-weight:600; font-size:15px; letter-spacing:0.02em;
+    color: var(--text);
+    display:flex; align-items:center; gap:10px;
+  }
+  .logo span{ color: var(--teal); }
+  .nav-links{ display:flex; gap:32px; font-family: var(--font-mono); font-size:13px; color: var(--text-muted); }
+  .nav-links a:hover{ color: var(--teal); }
+  .nav-cta{
+    font-family: var(--font-mono); font-size:13px;
+    border:1px solid var(--teal); color: var(--teal);
+    padding: 7px 14px; border-radius:3px;
+  }
+  .nav-cta:hover{ background: var(--teal-dim); }
+
+  /* HERO */
+  .hero{ padding: 100px 0 90px; }
+  .eyebrow{
+    font-family: var(--font-mono); font-size:12px; color: var(--amber);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    display:flex; align-items:center; gap:8px; margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:''; width:7px; height:7px; border-radius:50%;
+    background: var(--amber); display:inline-block;
+    box-shadow: 0 0 8px var(--amber);
+  }
+  .hero h1{
+    font-family: var(--font-display); font-weight:700;
+    font-size: clamp(38px, 6vw, 64px); line-height:1.08; letter-spacing:-0.02em;
+    max-width: 780px;
+  }
+  .hero h1 .accent{ color: var(--teal); }
+  .hero p.sub{
+    margin-top:22px; font-size:18px; color: var(--text-muted); max-width: 560px;
+  }
+  .hero-cta{ margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn-primary{
+    font-family: var(--font-mono); font-size:14px; font-weight:500;
+    background: var(--teal); color: #08211E;
+    padding: 13px 22px; border-radius: 3px; display:inline-block;
+  }
+  .btn-primary:hover{ background:#67e0d4; }
+  .btn-secondary{
+    font-family: var(--font-mono); font-size:14px;
+    border: 1px solid var(--border); color: var(--text);
+    padding: 13px 22px; border-radius: 3px; display:inline-block;
+  }
+  .btn-secondary:hover{ border-color: var(--text-muted); }
+
+  /* TERMINAL */
+  .terminal{
+    margin-top:56px; background: var(--surface); border:1px solid var(--border);
+    border-radius:6px; overflow:hidden; max-width: 640px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+  .terminal-bar{
+    display:flex; align-items:center; gap:8px; padding:10px 14px;
+    background: var(--surface-2); border-bottom:1px solid var(--border);
+  }
+  .dot{ width:10px; height:10px; border-radius:50%; background:#3a4657; }
+  .terminal-title{
+    font-family: var(--font-mono); font-size:12px; color: var(--text-muted); margin-left:8px;
+  }
+  .terminal-body{
+    padding: 20px 22px; font-family: var(--font-mono); font-size:13.5px;
+    color: #B9C6D4; min-height: 132px;
+  }
+  .terminal-body .line{ margin-bottom:8px; opacity:0; animation: reveal 0.4s forwards; }
+  .terminal-body .prompt{ color: var(--teal); }
+  .terminal-body .ok{ color: var(--teal); }
+  .terminal-body .warn{ color: var(--amber); }
+  .cursor{
+    display:inline-block; width:7px; height:14px; background: var(--teal);
+    vertical-align: middle; animation: blink 1s step-end infinite;
+  }
+  @keyframes reveal{ to{ opacity:1; } }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  /* SECTION SHARED */
+  section{ padding: 90px 0; border-top: 1px solid var(--border); }
+  .section-head{ margin-bottom: 54px; }
+  .section-num{
+    font-family: var(--font-mono); font-size:12px; color: var(--text-muted); letter-spacing:0.1em;
+  }
+  .section-title{
+    font-family: var(--font-display); font-weight:600; font-size: clamp(26px,3.4vw,36px);
+    margin-top:10px; letter-spacing:-0.01em;
+  }
+  .section-desc{ color: var(--text-muted); max-width:520px; margin-top:12px; font-size:15.5px; }
+
+  /* SERVICES */
+  .services{ display:grid; grid-template-columns: repeat(3, 1fr); gap:1px; background: var(--border); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .service{ background: var(--surface); padding: 34px 28px; position:relative; }
+  .service .tag{
+    font-family: var(--font-mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    padding: 4px 9px; border-radius:20px; display:inline-block; margin-bottom:20px;
+  }
+  .service.build .tag{ color: var(--teal); background: var(--teal-dim); }
+  .service.analyze .tag{ color: var(--teal); background: var(--teal-dim); }
+  .service.secure .tag{ color: var(--amber); background: var(--amber-dim); }
+  .service h3{ font-family: var(--font-display); font-size:20px; font-weight:600; margin-bottom:12px; }
+  .service p{ color: var(--text-muted); font-size:14.5px; margin-bottom:18px; }
+  .service ul{ list-style:none; }
+  .service li{
+    font-family: var(--font-mono); font-size:12.5px; color:#AAB8C4;
+    padding-left:16px; position:relative; margin-bottom:8px;
+  }
+  .service li::before{ content:'›'; position:absolute; left:0; color: var(--text-muted); }
+
+  /* STACK STRIP */
+  .stack-strip{
+    display:flex; flex-wrap:wrap; gap:12px;
+  }
+  .chip{
+    font-family: var(--font-mono); font-size:13px; color: var(--text);
+    background: var(--surface); border:1px solid var(--border);
+    padding: 9px 16px; border-radius: 20px;
+    display:flex; align-items:center; gap:9px;
+  }
+  .chip .pip{ width:6px; height:6px; border-radius:50%; background: var(--teal); }
+  .chip.sec .pip{ background: var(--amber); }
+
+  /* PROCESS */
+  .process{ display:flex; flex-direction:column; gap:0; }
+  .step{
+    display:grid; grid-template-columns: 70px 1fr; gap:24px;
+    padding: 26px 0; border-bottom:1px solid var(--border);
+  }
+  .step:last-child{ border-bottom:none; }
+  .step-num{ font-family: var(--font-mono); color: var(--text-muted); font-size:14px; padding-top:2px; }
+  .step h4{ font-family: var(--font-display); font-size:18px; font-weight:600; margin-bottom:6px; }
+  .step p{ color: var(--text-muted); font-size:14.5px; max-width:520px; }
+
+  /* PROJECTS PLACEHOLDER */
+  .projects{ display:grid; grid-template-columns: repeat(3,1fr); gap:20px; }
+  .project-card{
+    background: var(--surface); border:1px solid var(--border); border-radius:8px;
+    padding: 26px; min-height:180px; display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .project-card .ph-label{ font-family: var(--font-mono); font-size:11px; color: var(--text-muted); letter-spacing:0.08em; }
+  .project-card h4{ font-family: var(--font-display); font-size:17px; margin-top:10px; }
+  .project-card p{ color: var(--text-muted); font-size:13.5px; margin-top:8px; }
+  .project-card .stub-note{
+    margin-top: 18px; font-family: var(--font-mono); font-size:11px; color: var(--amber);
+  }
+
+  /* CONTACT */
+  .contact-box{
+    background: var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding: 48px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px;
+  }
+  .contact-box h3{ font-family: var(--font-display); font-size:24px; font-weight:600; max-width:420px; }
+  .contact-links{ display:flex; gap:14px; flex-wrap:wrap; }
+
+  footer{
+    padding: 30px 0; text-align:center; font-family: var(--font-mono);
+    font-size:12px; color: var(--text-muted); border-top:1px solid var(--border);
+  }
+
+  @media (max-width: 820px){
+    .services, .projects{ grid-template-columns: 1fr; }
+    .nav-links{ display:none; }
+    .contact-box{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="logo">
+      <svg width="34" height="34" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="navbg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#121922"/>
+            <stop offset="100%" stop-color="#0B0F14"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="116" height="116" rx="26" fill="url(#navbg)" stroke="#232E3D" stroke-width="3"/>
+        <rect x="34" y="66" width="10" height="20" rx="2" fill="#4FD1C5"/>
+        <rect x="50" y="56" width="10" height="30" rx="2" fill="#4FD1C5"/>
+        <rect x="66" y="44" width="10" height="42" rx="2" fill="#E8A33D"/>
+        <path d="M34 38 L46 48 L34 58" fill="none" stroke="#8194A6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Elevate<span style="color:var(--teal)">Tech</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#services">services</a>
+      <a href="#stack">stack</a>
+      <a href="#process">process</a>
+      <a href="#work">work</a>
+    </div>
+    <a href="#contact" class="nav-cta">get in touch</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" style="border-top:none;">
+    <div class="eyebrow">available for freelance engagements</div>
+    <h1>We build software, and <span class="accent">read the numbers behind it.</span></h1>
+    <p class="sub">Full-stack development and data-driven business analysis — one team, two disciplines that usually live in separate vendors.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">start a project →</a>
+      <a href="#work" class="btn-secondary">see the work</a>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="terminal-title">status.sh</div>
+      </div>
+      <div class="terminal-body">
+        <div class="line" style="animation-delay:0.1s"><span class="prompt">$</span> ./run --checks</div>
+        <div class="line" style="animation-delay:0.5s">build&nbsp;&nbsp;&nbsp;&nbsp;<span class="ok">[ready]</span>&nbsp;&nbsp;React · Node · MongoDB</div>
+        <div class="line" style="animation-delay:0.9s">analyze&nbsp;&nbsp;<span class="ok">[ready]</span>&nbsp;&nbsp;Python · pandas · matplotlib</div>
+        <div class="line" style="animation-delay:1.3s"><span class="prompt">$</span> <span class="cursor"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="section-head">
+      <div class="section-num">01 — services</div>
+      <h2 class="section-title">Two disciplines, one point of contact</h2>
+      <p class="section-desc">Every engagement can run standalone or stacked — build the product, then understand what it's actually earning and where the gap to competitors is.</p>
+    </div>
+    <div class="services" style="grid-template-columns: repeat(2, 1fr);">
+      <div class="service build">
+        <span class="tag">build</span>
+        <h3>Full-Stack Development</h3>
+        <p>Websites and web apps from scratch, or features added to what you already run.</p>
+        <ul>
+          <li>React front ends</li>
+          <li>Node / Python back ends</li>
+          <li>MongoDB data layer</li>
+          <li>Deployment & handover docs</li>
+        </ul>
+      </div>
+      <div class="service analyze">
+        <span class="tag">analyze</span>
+        <h3>Business & Data Analysis</h3>
+        <p>What your numbers actually say, how you compare to competitors, and where the gap is.</p>
+        <ul>
+          <li>Revenue & growth breakdown</li>
+          <li>Competitor benchmarking</li>
+          <li>Python / Matplotlib reporting</li>
+          <li>Power BI dashboards</li>
+          <li>R for statistical analysis</li>
+          <li>An execution plan, not just a chart</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="section-head">
+      <div class="section-num">02 — stack</div>
+      <h2 class="section-title">Core stack</h2>
+      <p class="section-desc">What we build with hands-on, every day.</p>
+    </div>
+    <div class="stack-strip">
+      <div class="chip"><span class="pip"></span>React</div>
+      <div class="chip"><span class="pip"></span>MongoDB</div>
+      <div class="chip"><span class="pip"></span>Node.js</div>
+      <div class="chip"><span class="pip"></span>Python</div>
+      <div class="chip"><span class="pip"></span>Matplotlib / pandas</div>
+      <div class="chip"><span class="pip"></span>Power BI</div>
+      <div class="chip"><span class="pip"></span>R</div>
+    </div>
+
+    <div class="section-head" style="margin-top:56px;">
+      <div class="section-num">expanding into</div>
+      <h3 style="font-family: var(--font-display); font-size:19px; font-weight:600; margin-top:8px;">Building capacity as we grow</h3>
+      <p class="section-desc">As we bring on specialists, coverage extends into these — not claimed as personal expertise today, but where the team is headed.</p>
+    </div>
+    <div class="stack-strip">
+      <div class="chip" style="border-style:dashed; color:var(--text-muted);"><span class="pip" style="background:var(--text-muted);"></span>TypeScript</div>
+      <div class="chip" style="border-style:dashed; color:var(--text-muted);"><span class="pip" style="background:var(--text-muted);"></span>Java</div>
+      <div class="chip" style="border-style:dashed; color:var(--text-muted);"><span class="pip" style="background:var(--text-muted);"></span>Go</div>
+      <div class="chip" style="border-style:dashed; color:var(--text-muted);"><span class="pip" style="background:var(--text-muted);"></span>Rust</div>
+      <div class="chip" style="border-style:dashed; color:var(--text-muted);"><span class="pip" style="background:var(--text-muted);"></span>C#</div>
+      <div class="chip" style="border-style:dashed; color:var(--text-muted);"><span class="pip" style="background:var(--text-muted);"></span>PHP</div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="section-head">
+      <div class="section-num">03 — process</div>
+      <h2 class="section-title">How an engagement runs</h2>
+      <p class="section-desc">Order matters here — each stage's output is the input to the next.</p>
+    </div>
+    <div class="process">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div><h4>Scope</h4><p>A short call to define what "done" looks like and a fixed quote before any work starts.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div><h4>Build / Audit</h4><p>Development sprints or analysis passes, with visible progress — no disappearing for three weeks.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div><h4>Report</h4><p>Findings and deliverables explained in plain language, not just handed over as raw files.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div><h4>Iterate</h4><p>A follow-up round to fix, refine, or extend based on what the first pass turned up.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head">
+      <div class="section-num">04 — work</div>
+      <h2 class="section-title">Sample work</h2>
+      <p class="section-desc">No client work yet — these are self-directed projects built to demonstrate real ability, labeled honestly as practice rather than paid engagements.</p>
+    </div>
+    <div class="projects" style="grid-template-columns: repeat(2, 1fr);">
+      <a href="https://github.com/weelevatetech/cafe-platform" class="project-card" style="text-decoration:none; color:inherit; display:block;">
+        <div>
+          <span class="ph-label">SAMPLE · BUILD</span>
+          <h4>Brew & Bloom Cafe Platform</h4>
+          <p>Full-stack table booking, ordering & billing system — React, Node/Express, MongoDB. Customers book a table, pre-order, and pay; staff manage orders, clear bills, and view a revenue dashboard.</p>
+        </div>
+        <div class="stub-note" style="color:var(--teal);">view on GitHub →</div>
+      </a>
+      <a href="https://github.com/weelevatetech/socialsprout-analysis" class="project-card" style="text-decoration:none; color:inherit; display:block;">
+        <div>
+          <span class="ph-label">SAMPLE · ANALYZE</span>
+          <h4>SocialSprout Performance Analysis</h4>
+          <p>Competitive benchmarking report for a Bangalore Instagram marketing agency — Python, pandas, Matplotlib. Revenue trends, market share, acquisition efficiency, and a concrete action plan.</p>
+        </div>
+        <div class="stub-note" style="color:var(--teal);">view on GitHub →</div>
+      </a>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-box">
+      <h3>Have a project in mind? Tell me what you're trying to get done.</h3>
+      <div class="contact-links">
+        <a href="mailto:weelevatetech@gmail.com" class="btn-primary">weelevatetech@gmail.com</a>
+        <a href="https://www.linkedin.com/in/elevatetech-undefined-0273ab42b" class="btn-secondary">LinkedIn</a>
+        <a href="https://github.com/weelevatetech" class="btn-secondary">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 ElevateTech · Built with React, MongoDB & Python
+</footer>
+
+</body>
+</html>
